@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Casa {
+public:
+    string material;
+    virtual void golpear_puerta() {
+        cout << "¡Toc, toc!" << endl;
+    }
+    virtual void resistencia() {}
+};
+class CasaPaja : public Casa {
+public:
+    CasaPaja() {
+        material = "paja";
+    }
+    void resistencia() override {
+        cout << "La casa de paja es débil." << endl;
+    }
+};
+class CasaMadera : public Casa {
+public:
+    CasaMadera() {
+        material = "madera";
+    }
+    void resistencia() override {
+        cout << "La casa de madera es un poco más fuerte." << endl;
+    }
+};
+class CasaLadrillo : public Casa {
+public:
+    CasaLadrillo() {
+        material = "ladrillo";
+    }
+    void resistencia() override {
+        cout << "La casa de ladrillo es muy resistente." << endl;
+    }
+};
+class Cerdito {
+public:
+    string nombre;
+    Cerdito(string nombre) {
+        this->nombre = nombre;
+    }
+    Casa* construir_casa(string material) {
+        if (material == "paja") {
+            return new CasaPaja();
+        }
+        else if (material == "madera") {
+            return new CasaMadera();
+        }
+        else if (material == "ladrillo") {
+            return new CasaLadrillo();
+        }
+        return nullptr;
+    }
+    void entrar_a_casa(Casa* casa) {
+        cout << nombre << " sale de la casa de " << casa->material << "." << endl;
+    }
+};
+class Lobo {
+public:
+    void soplar(Casa* casa) {
+        cout << "El lobo sopla la casa de " << casa->material << "." << endl;
+    }
+};
+int main() {
+    
+    Cerdito cerdito1("Cerdito 1");
+    Cerdito cerdito2("Cerdito 2");
+    Cerdito cerdito3("Cerdito 3");
+
+    Casa* casa1 = cerdito1.construir_casa("paja");
+    Casa* casa2 = cerdito2.construir_casa("madera");
+    Casa* casa3 = cerdito3.construir_casa("ladrillo");
+
+    Lobo lobo;
+    lobo.soplar(casa1);
+    cerdito1.entrar_a_casa(casa1);  // El cerdito huye a otra casa
+    lobo.soplar(casa2);
+    cerdito2.entrar_a_casa(casa2);  // El cerdito huye a otra casa
+    lobo.soplar(casa3);
+    cout << "Cerdito 3 se reune con sus hermanos en la casa de ladrillo." << endl; // El cerdito se siente seguro
+
+    delete casa1;
+    delete casa2;
+    delete casa3;
+
+    return 0;
+}
